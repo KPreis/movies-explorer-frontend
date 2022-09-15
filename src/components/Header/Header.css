@@ -3,16 +3,38 @@
   min-width: 320px;
   box-sizing: border-box;
   background: #5C5C5C;
+  border: 1px solid red;
 }
 
 .header__content {
   margin: 0 auto;
-  padding: 0 0 0 70px;
+  padding: 0 70px 0 70px;
   max-width: 1280px;
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
+  border: 1px solid red;
 }
 
 .header__logo {
   margin: 18px 0;
+}
+
+.header__links {
+  margin: 21px 0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: calc(16/12);
+}
+
+.header__register-link {
+  color: #FFFFFF;
+  text-decoration: none;
+  margin: 8px 0 0;
+  
+}
+
+.header__login-link {
+  color: #000000;
+  text-decoration: none;
 }
