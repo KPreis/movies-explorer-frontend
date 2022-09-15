@@ -3,7 +3,6 @@
   min-width: 320px;
   box-sizing: border-box;
   background: #5C5C5C;
-  border: 1px solid red;
 }
 
 .header__content {
@@ -13,7 +12,6 @@
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
-  border: 1px solid red;
 }
 
 .header__logo {
@@ -21,20 +19,31 @@
 }
 
 .header__links {
-  margin: 21px 0;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: calc(16/12);
+  margin: 29px 0;
 }
 
 .header__register-link {
+  background: #5C5C5C;
   color: #FFFFFF;
-  text-decoration: none;
-  margin: 8px 0 0;
-  
+  border: none;
+  font-family: "Inter";
+  font-size: 12px;
+  font-weight: 500;
+  line-height: calc(16/12);
+  padding: 0;
 }
 
 .header__login-link {
+  background: #2BE080;
   color: #000000;
-  text-decoration: none;
+  border: none;
+  border-radius: 3px;
+  width: 76px;
+  height: 32px;
+  margin: 0 0 0 30px;
+  padding: 0;
+  font-family: "Inter";
+  font-size: 12px;
+  font-weight: 500;
+  line-height: calc(16/12);
 }

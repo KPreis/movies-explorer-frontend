@@ -1,6 +1,5 @@
 import logo from '../../images/logo.svg';
 import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
 import './Header.css';
 
 function Header() {
@@ -10,12 +9,12 @@ function Header() {
       <div className="header__content">
         <img className="header__logo" src={logo} alt="Логотип" />
         <div className="header__links">
-          <Link className="header__register-link">
+          <button className="header__register-link">
             Регистрация
-          </Link>
-          <Link className="header__login-link">
+          </button>
+          <button className="header__login-link">
             Войти
-          </Link>
+          </button>
         </div>
       </div>
     </header>
