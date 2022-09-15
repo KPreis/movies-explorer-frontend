@@ -3,8 +3,7 @@ import React from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import './Header.css';
 
-function Header({ onSignOut, emailUserInHeader }) {
-  const location = useLocation(true);
+function Header() {
 
   return (
     <header className="header">
