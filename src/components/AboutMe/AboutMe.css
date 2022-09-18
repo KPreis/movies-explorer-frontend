@@ -1,0 +1,81 @@
+.about-me {
+  min-height: 625px;
+  color: #000000;
+  background: #FFFFFF;
+}
+
+.about-me__content {
+  margin: 0 auto;
+  padding: 110px 70px 0;
+  max-width: 1280px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.about-me__title {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter";
+  font-size: 22px;
+  font-weight: 400;
+  line-height: calc(27/22);
+}
+
+.about-me__container {
+  width: 100%;
+  margin: 23px 0 0 0;
+  padding: 66px 0 0;
+  display: flex;
+  border-top: 1px solid #000000;
+  justify-content: space-between;
+}
+
+.about-me_description-container {
+  width: 600px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.about-me__name {
+  margin: 0;
+  padding: 0;
+  font-family: "Inter";
+  font-size: 50px;
+  font-weight: 400;
+  line-height: calc(58/50);
+}
+
+.about-me__short-description {
+  margin: 18px 0 0;
+  padding: 0;
+  font-family: "Inter";
+  font-size: 18px;
+  font-weight: 500;
+  line-height: calc(22/14);
+}
+.about-me__description {
+  margin: 26px 0 0;
+  padding: 0;
+  font-family: "Inter";
+  font-size: 14px;
+  font-weight: 400;
+  line-height: calc(20/18);
+}
+.about-me__github-link {
+  text-decoration: none;
+  margin: 99px 0 0;
+  padding: 0;
+  color: #000000;
+  font-family: "Inter";
+  font-size: 14px;
+  font-weight: 500;
+  line-height: calc(17/14);
+}
+.about-me__photo {
+  width: 270px;
+  border-radius: 10px;
+}
