@@ -1,21 +1,15 @@
 import logo from '../../images/logo.svg';
 import React from 'react';
+import Navigation from '../Navigation/Navigation';
 import './Header.css';
 
-function Header() {
+function Header({ isLogedIn }) {
 
   return (
-    <header className="header">
+    <header className={`header ${!isLogedIn && "header_landing"}`} >
       <div className="header__content">
         <img className="header__logo" src={logo} alt="Логотип" />
-        <div className="header__links">
-          <button className="header__register-link">
-            Регистрация
-          </button>
-          <button className="header__login-link">
-            Войти
-          </button>
-        </div>
+        <Navigation isLogedIn={isLogedIn} />
       </div>
     </header>
   );

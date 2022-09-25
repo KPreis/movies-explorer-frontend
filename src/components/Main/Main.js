@@ -6,15 +6,31 @@ import Techs from '../Techs/Techs';
 import AboutMe from '../AboutMe/AboutMe';
 import Portfolio from '../Portfolio/Portfolio';
 
-function Main() {
+function Main({ isLogedIn }) {
   return (
-    <div className="main">
-      <Promo />
-      <AboutProject />
-      <Techs />
-      <AboutMe />
-      <Portfolio />
-    </div>
+    <main className="main">
+      {isLogedIn ? (
+        <>
+          <Promo />
+          <AboutProject />
+          <Techs />
+          <AboutMe />
+          <Portfolio />
+        </>
+      )
+      :
+      (
+        <>
+          <Promo />
+          <AboutProject />
+          <Techs />
+          <AboutMe />
+          <Portfolio />
+        </>
+      )
+    }
+      
+    </main>
   )
 }
 

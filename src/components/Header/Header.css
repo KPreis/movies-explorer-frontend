@@ -1,7 +1,11 @@
 .header {
   width: 100%;
   min-width: 320px;
+  height: 74px;
   box-sizing: border-box;
+}
+
+.header_landing {
   background: #5C5C5C;
 }
 
@@ -16,34 +20,4 @@
 
 .header__logo {
   margin: 18px 0;
-}
-
-.header__links {
-  margin: 29px 0;
-}
-
-.header__register-link {
-  background: #5C5C5C;
-  color: #FFFFFF;
-  border: none;
-  font-family: "Inter";
-  font-size: 12px;
-  font-weight: 500;
-  line-height: calc(16/12);
-  padding: 0;
-}
-
-.header__login-link {
-  background: #2BE080;
-  color: #000000;
-  border: none;
-  border-radius: 3px;
-  width: 76px;
-  height: 32px;
-  margin: 0 0 0 30px;
-  padding: 0;
-  font-family: "Inter";
-  font-size: 12px;
-  font-weight: 500;
-  line-height: calc(16/12);
 }

@@ -5,7 +5,7 @@ import image from '../../images/web-earth-img.svg'
 function Promo() {
 
   return (
-    <div className="promo">
+    <section className="promo">
       <div className="promo__content">
         <div className="promo__text-content">
           <h1 className="promo__title">Учебный проект студента факультета Веб-разработки.</h1>
@@ -17,7 +17,7 @@ function Promo() {
         <img className="promo__image" src={image} alt="..." />
       </div>
       
-    </div>
+    </section>
   );
 }
 
