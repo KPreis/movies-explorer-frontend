@@ -19,12 +19,12 @@ function Header({ isLogedIn }) {
         </header>
       </Route>
       <Route exact path="/(movies|saved-movies|profile)">
-        <header className={`header ${!isLogedIn && "header_landing"}`} >
+        <header className="header" >
           <div className="header__content">
             <Link to="/">
               <img className="header__logo" src={logo} alt="Логотип" />
             </Link>
-            <Navigation isLogedIn={isLogedIn} />
+            <Navigation isLogedIn={true} />
           </div>
         </header>
       </Route>
