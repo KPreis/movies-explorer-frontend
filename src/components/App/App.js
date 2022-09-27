@@ -108,12 +108,9 @@ function App() {
         <div className="app__page">
           <Header isLogedIn={isLogedIn} />
           <Switch>
-            <ProtectedRoute
-              exact
-              path="/"
-              isLogedIn={isLogedIn}
-              component={Main}
-            />
+            <Route exact path="/">
+              <Main />
+            </Route>
             <Route path="/sign-up">
               <Register onRegister={onRegister} />
             </Route>
