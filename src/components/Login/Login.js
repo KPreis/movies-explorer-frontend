@@ -1,56 +1,65 @@
-import { React, useState } from 'react';
+import React, { useEffect } from 'react';
 import './Login.css';
-import image from '../../images/web-earth-img.svg'
+import useFormWithValidation from '../../hooks/useFormWithValidation';
+import Form from '../Form/Form';
 
-function Login( {onLogin}) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+function Login( ) {
+  const { values, handleChange, resetFrom, errors, isValid } = useFormWithValidation();
+  const isDisabled = !isValid;
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onLogin(email, password);
-  };
+  useEffect(() => {
+    resetFrom({}, {}, false);
+  }, [resetFrom]);
 
   return (
-    <form className="login-form" noValidate onSubmit={handleSubmit}>
-      <h2 className="login-form__header">Вход</h2>
+    <section className="login">
+      <Form
+        formName="login"
+        titleText="Рады видеть!"
+        submitButtonText="Войти"
+        questionText="Ещё не зарегистрированы?"
+        linkPath="/signup"
+        linkText="Регистрация"
+        isSubmitDisabled={isDisabled}
+      >
 
-      <input
-        className="login-form__item"
-        onChange={handleEmailChange}
-        type="text"
-        name="email"
-        value={email}
-        placeholder="Email"
-        required
-        minLength="2"
-        maxLength="40"
-      />
-      <input
-        className="login-form__item"
-        onChange={handlePasswordChange}
-        type="password"
-        name="password"
-        value={password}
-        autoComplete="on"
-        placeholder="Пароль"
-        required
-        minLength="2"
-        maxLength="200"
-      />
+        <label className="form__label">
+          <span className="form__label-text">E-mail</span>
+          <input
+            value={values.email || ''}
+            onChange={handleChange}
+            id="email-input"
+            type="email"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+            name="email"
+            placeholder="E-mail"
+            className="form__input form__input_type_email"
+            required
+          />
+          <span className="email-input-error form__input-error">
+            {errors.email || ''}
+          </span>
+        </label>
 
-      <button className="login-form__save-button" type="submit">
-        Войти
-      </button>
-    </form>
+        <label className="form__label">
+          <span className="form__label-text">Пароль</span>
+          <input
+            value={values.password || ''}
+            onChange={handleChange}
+            id="password-input"
+            type="password"
+            name="password"
+            placeholder="Пароль"
+            className="form__input form__input_type_password"
+            required
+          />
+          <span className="password-input-error form__input-error">
+            {errors.password || ''}
+          </span>
+        </label>
+      </Form>
+    </section>
   );
-};
+}
 
 export default Login;

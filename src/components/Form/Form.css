@@ -1,0 +1,154 @@
+.form {
+  width: 100%;
+  max-width: 396px;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.form__logo {
+  width: 38px;
+}
+
+.form__title {
+  margin: 0;
+  padding: 40px 0;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: calc(29/24);
+  color: #000000;
+}
+
+.form__label {
+  display: flex;
+  flex-direction: column;
+}
+
+.form__label:last-of-type {
+  margin-bottom: 0;
+}
+
+.form__label-text {
+  padding-bottom: 5px;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: calc(10/12);
+  color: #A0A0A0;
+}
+
+.form__input {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: calc(17/14);
+  color: #000000;
+  border: none;
+  padding: 0 0 10px 0;
+  border-bottom: 1px solid #E8E8E8;
+}
+
+.form__input:focus {
+  outline: none;
+  border-bottom: 1px solid #2BE080;
+}
+
+.form__input-error {
+  padding: 6px 0;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: calc(12/10);
+  color: #EE3465;
+}
+
+.form__input_type_password {
+  color: #EE3465;
+}
+
+.form__submit {
+  min-height: 50px;
+  border: none;
+  background-color: #2BE080;
+  border-radius: 3px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: calc(17/14);
+  color: #FFFFFF;
+}
+
+.form__submit_inactive {
+  background-color: #F8F8F8;
+  color: #C2C2C2;
+}
+
+.form__submit:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.form__feedback {
+  margin: 0 0 auto;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: calc(12/10);
+}
+
+.form__feedback_type_error {
+  color: #EE3465;
+}
+
+.form__feedback_type_success {
+  color: #2BE080;
+}
+
+.form__sign-in-wrap {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.form__sign-in-question {
+  margin: 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: calc(17/14);
+  color: #A0A0A0;
+}
+
+.form__sign-in-link {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: calc(17/14);
+  color: #2BE080;
+  text-decoration: none;
+}
+
+.form__sign-in-link:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+@media screen and (max-width: 530px) {
+  .form__logo {
+    margin: 56px auto 0;
+    display: block;
+  }
+
+  .form__title {
+    text-align: center;
+    padding: 50px 0 80px;
+  }
+
+  .form__submit {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .form__sign-in-question {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .form__sign-in-link {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

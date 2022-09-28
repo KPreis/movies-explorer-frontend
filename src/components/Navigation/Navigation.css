@@ -28,6 +28,9 @@
   margin: 0;
   text-decoration: none;
 }
+.navigation__register-link:hover {
+  opacity: 0.7;
+}
 
 .navigation__login-button {
   background: #2BE080;
@@ -42,6 +45,11 @@
   font-size: 12px;
   font-weight: 500;
   line-height: calc(16/12);
+}
+
+.navigation__login-button:hover {
+  opacity: 0.7;
+  cursor: pointer;
 }
 
 .navigation__links {
@@ -60,6 +68,10 @@
   text-decoration: none;
 }
 
+.navigation__link:hover {
+  opacity: 0.7;
+}
+
 .navigation__account-button {
   background: #FFFFFF;
   color: #000000;
@@ -74,6 +86,11 @@
   font-weight: 500;
   line-height: calc(16/12);
   display: inline-block;
+}
+
+.navigation__account-button:hover {
+  opacity: 0.7;
+  cursor: pointer;
 }
 
 .navigation__account-button-logo {

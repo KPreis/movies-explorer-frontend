@@ -1,22 +1,83 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Register.css';
-import image from '../../images/web-earth-img.svg'
+import Form from '../Form/Form';
+import useFormWithValidation from '../../hooks/useFormWithValidation';
 
 function Register() {
 
+  const { values, handleChange, resetFrom, errors, isValid } = useFormWithValidation();
+  const isDisabled = !isValid;
+
+  useEffect(() => {
+    resetFrom({}, {}, false);
+  }, [resetFrom]);
+
   return (
     <section className="register">
-      <div className="register__content">
-        <div className="register__text-content">
-          <h1 className="register__title">Учебный проект студента факультета Веб-разработки.</h1>
-          <p className="register__help-text">Листайте ниже, чтобы узнать больше про этот проект и его создателя.</p>
-          <button className="register__more-info-button">
-            Узнать больше
-          </button>
-        </div>
-        <img className="register__image" src={image} alt="..." />
-      </div>
-      
+      <Form
+        formName="register"
+        titleText="Добро пожаловать!"
+        submitButtonText="Зарегистрироваться"
+        questionText="Уже зарегистрированы?"
+        linkPath="/signin"
+        linkText="Войти"
+        isSubmitDisabled={isDisabled}
+        text="Что-то пошло не так..."
+      >
+        <label className="form__label">
+          <span className="form__label-text">Имя</span>
+          <input
+            value={values.name || ''}
+            onChange={handleChange}
+            id="name-input"
+            type="text"
+            name="name"
+            placeholder="Имя"
+            className="form__input form__input_type_name"
+            minLength="2"
+            maxLength="30"
+            required
+          />
+          <span className="name-input-error form__input-error">
+            {errors.name || ''}
+          </span>
+        </label>
+
+        <label className="form__label">
+          <span className="form__label-text">E-mail</span>
+          <input
+            value={values.email || ''}
+            onChange={handleChange}
+            id="email-input"
+            type="email"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+            name="email"
+            placeholder="E-mail"
+            className="form__input form__input_type_email"
+            required
+          />
+          <span className="email-input-error form__input-error">
+            {errors.email || ''}
+          </span>
+        </label>
+
+        <label className="form__label" >
+          <span className="form__label-text">Пароль</span>
+          <input
+            value={values.password || ''}
+            onChange={handleChange}
+            id="password-input"
+            type="password"
+            name="password"
+            placeholder="Пароль"
+            className="form__input form__input_type_password"
+            required
+          />
+          <span className="password-input-error form__input-error">
+            {errors.password || ''}
+          </span>
+        </label>
+      </Form>
     </section>
   );
 }
