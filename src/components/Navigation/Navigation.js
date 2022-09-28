@@ -1,7 +1,7 @@
 import React from 'react';
 import './Navigation.css';
 import accountLogo from '../../images/account.svg';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 function Navigation({isLogedIn}) {
 
@@ -10,12 +10,12 @@ function Navigation({isLogedIn}) {
       {isLogedIn ? (
         <div className="navigation__content">
           <div className="navigation__links">
-            <Link to="/movies" className="navigation__link">
+            <NavLink to="/movies" className="navigation__link" activeClassName="navigation__link_active">
               Фильмы
-            </Link>
-            <Link to="/saved-movies" className="navigation__link">
+            </NavLink>
+            <NavLink to="/saved-movies" className="navigation__link" activeClassName="navigation__link_active">
               Сохранённые фильмы
-            </Link>
+            </NavLink>
           </div>
           <Link to="/profile" >
             <button className="navigation__account-button">

@@ -18,6 +18,10 @@
   background-repeat: no-repeat;
 }
 
+.checkbox__pseudo-checkbox:hover {
+  cursor: pointer;
+}
+
 .checkbox__invisible-checkbox:checked + .checkbox__pseudo-checkbox {
   background-image: url("./../../images/checkbox-on.svg");
 }
