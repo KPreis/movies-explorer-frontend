@@ -21,3 +21,26 @@
 .header__logo {
   margin: 18px 0;
 }
+
+.header__wraper {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+  .header__content {
+    padding: 18px 30px;
+    max-width: 768px;
+  }
+  .header__logo {
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .header__content {
+    padding: 18px 14px;
+  }
+}

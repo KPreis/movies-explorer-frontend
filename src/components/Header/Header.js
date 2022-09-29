@@ -11,10 +11,12 @@ function Header({ isLogedIn }) {
       <Route exact path="/">
         <header className={`header ${!isLogedIn && "header_landing"}`} >
           <div className="header__content">
-            <Link to="/">
-              <img className="header__logo" src={logo} alt="Логотип" />
-            </Link>
-            <Navigation isLogedIn={isLogedIn} />
+            <div className="header__wraper">
+              <Link to="/">
+                <img className="header__logo" src={logo} alt="Логотип" />
+              </Link>
+              <Navigation isLogedIn={isLogedIn} />
+            </div>
           </div>
         </header>
       </Route>

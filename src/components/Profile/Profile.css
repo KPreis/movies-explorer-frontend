@@ -1,0 +1,139 @@
+.profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.profile-form {
+  width: 100%;
+  max-width: 410px;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.profile-form__title {
+  margin: 0;
+  padding: 74px 0 110px;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: calc(29/24);
+  color: #000000;
+  text-align: center;
+}
+
+.profile-form__label {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #E8E8E8;
+}
+
+.profile-form__label-text {
+  padding: 17px 0 16px;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: calc(13/11);
+  color: #000000;
+}
+
+.profile-form__label:last-of-type {
+  border: none;
+  margin: 0 0 auto;
+}
+
+.profile-form__input {
+  flex-grow: 1;
+  padding: 0;
+  border:none;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: calc(13/11);
+  text-align: right;
+  color: #000000;
+}
+
+.profile-form__input:focus {
+  outline: none;
+}
+
+.profile-form__input_disabled {
+  background-color: transparent;
+}
+
+.profile-form__submit {
+  min-height: 50px;
+  border: none;
+  background-color: #2BE080;
+  border-radius: 3px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: calc(17/14);
+  color: #FFFFFF;
+}
+
+.profile-form__submit_inactive {
+  background-color: #F8F8F8;
+  color: #C2C2C2;
+}
+
+.profile-form__submit:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.profile-form__edit {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: calc(17/14);
+  color: #000000;
+}
+
+.profile-form__edit:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.profile__logout {
+  margin: 16px 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: calc(16/13);
+  color: #EE3465;
+}
+
+.profile__logout:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+@media screen and (max-width: 530px) {
+  .profile {
+    padding: 0 30px;
+  }
+
+  .profile-form__title {
+    padding: 70px 0 80px;
+  }
+
+  .profile-form__submit {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .profile-form__edit {
+    font-size: 12px;
+    line-height: 15px;
+  }
+
+  .profile__logout {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

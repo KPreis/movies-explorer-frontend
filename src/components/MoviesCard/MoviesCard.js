@@ -2,9 +2,8 @@ import React from 'react';
 import './MoviesCard.css';
 import { Route, Switch } from 'react-router-dom';
 
-function MoviesCard( ) {
-  const isSaved = true;
-
+function MoviesCard( { isSaved } ) {
+  console.log(isSaved);
   const saveButtonClassName = `movies-card__button movies-card__button_type_save ${
     isSaved && "movies-card__button_type_saved"
   }`;

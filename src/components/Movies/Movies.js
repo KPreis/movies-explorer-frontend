@@ -9,6 +9,7 @@ function Movies() {
     <section className="movies">
       <SearchForm />
       <MoviesCardList />
+      <Preloader /> {/* for example */}
     </section>
   );
 }

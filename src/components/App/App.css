@@ -1,10 +1,11 @@
+.app {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+}
 .app__page {
-  min-width: 320px;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
   background: #FFFFFF;
-  font-family: "Inter", Arial, Helvetica, sans-serif;
   color: #ffffff;
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;

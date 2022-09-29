@@ -11,15 +11,15 @@ function MoviesCardList() {
   return (
     <section className="movies-card-list">
       <ul className="movies-card-list__list">
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
-        <MoviesCard />
+        <MoviesCard isSaved={true} />
+        <MoviesCard isSaved={false} />
+        <MoviesCard isSaved={true} />
+        <MoviesCard isSaved={true} />
+        <MoviesCard isSaved={false} />
+        <MoviesCard isSaved={false} />
+        <MoviesCard isSaved={false} />
+        <MoviesCard isSaved={false} />
+        <MoviesCard isSaved={false} />
       </ul>
       <button
         className={moreButtonClassName}

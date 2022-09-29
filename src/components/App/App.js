@@ -9,6 +9,7 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
+import Profile from '../Profile/Profile';
 
 function App() {
   const isLogedIn = false;
@@ -35,7 +36,7 @@ function App() {
               <SavedMovies />
             </Route>
             <Route path="/profile">
-              <Login />
+              <Profile />
             </Route>
             <Route>
               {isLogedIn ? <Redirect to="/" /> : <Redirect to="/signup" />}

@@ -54,11 +54,11 @@
 }
 
 .movies-card__button_type_save {
-  background-image: url("./../../images/saved-button.svg");
+  background-image: url("./../../images/save-button.svg");
 }
 
-.movies-card__button_type_save-active {
-  background-image: url("./../../images/save-button.svg");
+.movies-card__button_type_saved {
+  background-image: url("./../../images/saved-button.svg");
 }
 
 .movies-card__button_type_delete {
