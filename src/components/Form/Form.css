@@ -1,5 +1,4 @@
 .form {
-  width: 100%;
   max-width: 396px;
   min-height: 80vh;
   display: flex;
@@ -127,28 +126,35 @@
 }
 
 @media screen and (max-width: 530px) {
+  .form {
+    min-width: 320px;
+    padding: 0 30px;
+  }
   .form__logo {
     margin: 56px auto 0;
     display: block;
   }
-
+  .form__label {
+    margin: 0 30px;
+  }
   .form__title {
     text-align: center;
     padding: 50px 0 80px;
   }
-
-  .form__submit {
-    font-size: 12px;
-    line-height: 15px;
+  .form__feedback {
+    margin: 0 30px auto;
   }
-
+  .form__submit {
+    margin: auto 30px;
+    font-size: 12px;
+    line-height: calc(15/12);
+  }
   .form__sign-in-question {
     font-size: 12px;
-    line-height: 15px;
+    line-height: calc(15/12);
   }
-
   .form__sign-in-link {
     font-size: 12px;
-    line-height: 15px;
+    line-height: calc(15/12);
   }
 }
