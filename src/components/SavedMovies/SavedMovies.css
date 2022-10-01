@@ -1,6 +1,6 @@
 .saved-movies-card-list {
   max-width: 1280px; 
-  padding: 70px 70px 50px;
+  padding: 70px 70px 0;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -10,9 +10,33 @@
 
 .saved-movies-card-list__list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 360px));
+  gap: 32px 28px;
   list-style-type: none;
+  justify-content: center;
   margin: 0;
   padding: 0;
+}
+
+@media screen and (max-width: 905px) {
+  .saved-movies-card-list {
+    padding: 70px 30px 0;
+  }
+  
+  .saved-movies-card-list__list {
+    grid-template-columns: repeat(auto-fill, minmax(342px, 342px));
+    gap: 35px 24px;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .saved-movies-card-list {
+    padding: 40px 10px 0;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .saved-movies-card-list {
+    min-width: 320px;
+  }
 }

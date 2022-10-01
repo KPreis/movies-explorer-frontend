@@ -3,10 +3,15 @@
   min-height: 80vh;
   display: flex;
   flex-direction: column;
+  vertical-align: middle;
+  box-sizing: border-box;
 }
 
 .form__logo {
   width: 38px;
+  display: block;
+  margin: 0;
+  padding: 0;
 }
 
 .form__title {
@@ -125,13 +130,13 @@
   opacity: 0.7;
 }
 
-@media screen and (max-width: 530px) {
+@media screen and (max-width: 320px) {
   .form {
     min-width: 320px;
     padding: 0 30px;
   }
   .form__logo {
-    margin: 56px auto 0;
+    margin: 0 auto;
     display: block;
   }
   .form__label {

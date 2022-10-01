@@ -15,7 +15,7 @@
 }
 
 .promo__title {
-  width: 640px;
+  max-width: 640px;
   font-family: "Inter";
   font-size: 50px;
   font-weight: 400;

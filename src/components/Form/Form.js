@@ -13,9 +13,8 @@ function Form({ children, titleText, text, submitButtonText, questionText, linkP
 
   return(
     <form className="form">
-      <Link to="/">
+      <Link className="form__logo" to="/">
         <img
-          className="form__logo"
           src={logo}
           alt="Логотип сайта"
         />

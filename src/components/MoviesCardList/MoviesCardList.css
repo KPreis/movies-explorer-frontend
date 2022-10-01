@@ -41,7 +41,7 @@
   opacity: 0.8;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 905px) {
   .movies-card-list {
     padding: 70px 30px 0;
   }
@@ -49,6 +49,7 @@
   .movies-card-list__list {
     grid-template-columns: repeat(auto-fill, minmax(342px, 342px));
     gap: 35px 24px;
+    justify-content: center;
   }
 }
 
@@ -60,5 +61,11 @@
   .movies-card-list__more-button {
     width: 240px;
     height: 36px;
+  }
+}
+
+@media screen and (max-width: 530px) {
+  .movies-card-list {
+    min-width: 320px;
   }
 }
