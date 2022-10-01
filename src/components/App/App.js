@@ -39,7 +39,7 @@ function App() {
               <Profile />
             </Route>
             <Route>
-              {isLogedIn ? <Redirect to="/" /> : <Redirect to="/signup" />}
+              <Redirect to="/" />
             </Route>
           </Switch>
           <Footer />
