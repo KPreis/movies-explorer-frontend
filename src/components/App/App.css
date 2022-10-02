@@ -1,0 +1,13 @@
+.app {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+}
+.app__page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #FFFFFF;
+  color: #ffffff;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
