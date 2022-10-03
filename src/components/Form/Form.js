@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import './Form.css';
 import logo from '../../images/logo.svg';
 
-function Form({ children, titleText, text, submitButtonText, questionText, linkPath, linkText, isSubmitDisabled }) {
+function Form({ children, titleText, submitButtonText, questionText, linkPath, linkText, isSubmitDisabled, statusRegister }) {
 
-  const type = 'error';
-
+  const type = statusRegister ? 'succes' : 'error';
+  const text = statusRegister ? 'Пользователь зарегестрирован' : 'Что-то пошло не так...';
   
   const apiFeedbackClassName = `form__feedback form__feedback_type_${type}`;
   const submitButtonClassName = `form__submit ${isSubmitDisabled && "form__submit_inactive"}`;
+  console.log(type, text);
 
   return(
     <form className="form">

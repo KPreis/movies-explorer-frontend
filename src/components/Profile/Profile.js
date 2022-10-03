@@ -2,7 +2,7 @@ import React from 'react';
 import './Profile.css';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
 
-function Profile() {
+function Profile( { handleSignOut } ) {
   const { values, handleChange, isValid } = useFormWithValidation();
 
   const isDisabled = !isValid;
@@ -73,7 +73,8 @@ function Profile() {
             >Редактировать</button>
             <button
               className="profile__logout"
-              type="button"
+                type="button"
+                onClick={handleSignOut}
             >Выйти из аккаунта</button>
           </>
         )}

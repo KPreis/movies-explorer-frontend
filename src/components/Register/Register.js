@@ -3,7 +3,7 @@ import './Register.css';
 import Form from '../Form/Form';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
 
-function Register() {
+function Register({handleRegister, statusRegister}) {
 
   const { values, handleChange, resetFrom, errors, isValid } = useFormWithValidation();
   const isDisabled = !isValid;
@@ -22,7 +22,7 @@ function Register() {
         linkPath="/signin"
         linkText="Войти"
         isSubmitDisabled={isDisabled}
-        text="Что-то пошло не так..."
+        statusRegister={statusRegister}
       >
         <label className="form__label">
           <span className="form__label-text">Имя</span>

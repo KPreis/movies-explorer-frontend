@@ -1,4 +1,4 @@
-class Api {
+class MainApi {
   constructor({ baseUrl, headers }) {
     this._baseUrl = baseUrl;
     this._headers = headers;
@@ -59,26 +59,15 @@ class Api {
     }).then(this._checkResponse);
   }
 
-  setAvatar(avatarLink) {
-    return fetch(`${this._baseUrl}/users/me/avatar`, {
-      method: 'PATCH',
-      headers: this._headers,
-      body: JSON.stringify({
-        avatar: `${avatarLink}`,
-      }),
-      credentials: 'include' 
-    }).then(this._checkResponse);
-  }
-
-  changeLikeCardStatus(id, isLiked) {
+  changeSaveCardStatus(id, isLiked) {
     if (isLiked) {
-      return fetch(`${this._baseUrl}/cards/${id}/likes`, {
-        method: 'PUT',
+      return fetch(`${this._baseUrl}/movies/`, {
+        method: 'POST',
         headers: this._headers,
         credentials: 'include' 
       }).then(this._checkResponse);
     } else {
-      return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+      return fetch(`${this._baseUrl}/movies/${id}`, {
         method: 'DELETE',
         headers: this._headers,
         credentials: 'include' 
@@ -87,7 +76,7 @@ class Api {
   }
 }
 
-export const api = new Api({
+export const mainApi = new MainApi({
   baseUrl: `https://api.movies.kpreis.nomoredomains.sbs`,
   headers: {
     'Content-Type': 'application/json',

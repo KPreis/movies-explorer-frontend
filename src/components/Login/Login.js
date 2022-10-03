@@ -3,7 +3,7 @@ import './Login.css';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
 import Form from '../Form/Form';
 
-function Login( ) {
+function Login( {handleLogin} ) {
   const { values, handleChange, resetFrom, errors, isValid } = useFormWithValidation();
   const isDisabled = !isValid;
 
