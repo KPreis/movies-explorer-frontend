@@ -1,3 +1,5 @@
+import {urlBeatFilm} from './consts';
+
 class MainApi {
   constructor({ baseUrl, headers }) {
     this._baseUrl = baseUrl;
@@ -11,28 +13,53 @@ class MainApi {
     return Promise.reject(`Ошибка: ${res.status}`);
   }
 
-  getInitialCards() {
-    return fetch(`${this._baseUrl}/cards`, {
+  getSavedMovies() {
+    return fetch(`${this._baseUrl}/movies`, {
       method: 'GET',
       headers: this._headers,
       credentials: 'include' 
     }).then(this._checkResponse);
   }
 
-  sendNewCard(card) {
-    return fetch(`${this._baseUrl}/cards`, {
+  saveMovie(movie) {
+    const {
+      country,
+      director,
+      duration,
+      year,
+      description,
+      trailerLink,
+      nameRU,
+      nameEN,
+      owner
+    } = movie;
+    const movieId = movie.id;
+    const image = `${urlBeatFilm}${movie.image.url}`;
+    const thumbnail = `${urlBeatFilm}${movie.image.formats.thumbnail.url}`;
+
+    return fetch(`${this._baseUrl}/movies`, {
       method: 'POST',
       headers: this._headers,
       body: JSON.stringify({
-        name: `${card['name']}`,
-        link: `${card['link']}`,
+        country,
+        director,
+        duration,
+        year,
+        description,
+        image,
+        trailerLink,
+        nameRU,
+        nameEN,
+        thumbnail,
+        movieId,
+        owner
       }),
       credentials: 'include' 
     }).then(this._checkResponse);
   }
 
-  deleteCard(id) {
-    return fetch(`${this._baseUrl}/cards/${id}`, {
+  deleteMovie(id) {
+    return fetch(`${this._baseUrl}/movies/${id}`, {
       method: 'DELETE',
       headers: this._headers,
       credentials: 'include' 
@@ -47,32 +74,16 @@ class MainApi {
     }).then(this._checkResponse);
   }
 
-  setProfile(profile) {
+  setProfile(name, email) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
-        name: `${profile['name']}`,
-        about: `${profile['about']}`,
+        name,
+        email
       }),
       credentials: 'include' 
     }).then(this._checkResponse);
-  }
-
-  changeSaveCardStatus(id, isLiked) {
-    if (isLiked) {
-      return fetch(`${this._baseUrl}/movies/`, {
-        method: 'POST',
-        headers: this._headers,
-        credentials: 'include' 
-      }).then(this._checkResponse);
-    } else {
-      return fetch(`${this._baseUrl}/movies/${id}`, {
-        method: 'DELETE',
-        headers: this._headers,
-        credentials: 'include' 
-      }).then(this._checkResponse);
-    }
   }
 }
 

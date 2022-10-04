@@ -18,6 +18,11 @@
   font-size: 15px;
   line-height: calc(18/15);
   color: #000000;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  width: 80%;
 }
 
 .movies-card__duration {

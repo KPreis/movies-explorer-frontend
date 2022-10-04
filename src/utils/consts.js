@@ -1,0 +1,1 @@
+export const urlBeatFilm = 'https://api.nomoreparties.co';

@@ -2,7 +2,7 @@ import React from 'react';
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({movies}) {
+function MoviesCardList({movies, handleMovieSave, savedMoviesByUser}) {
   const isMoreButtonVisible = true;
   const moreButtonClassName = `movies-card-list__more-button ${
     isMoreButtonVisible && "movies-card-list__more-button_visible"
@@ -14,7 +14,9 @@ function MoviesCardList({movies}) {
       {movies.map((movie) => (
           <MoviesCard
             key={movie.movieId}
-            movie={movie}
+          movie={movie}
+          savedMoviesByUser={savedMoviesByUser}
+          handleMovieSave={handleMovieSave}
           />
         ))}
       </ul>

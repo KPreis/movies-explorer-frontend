@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import './App.css';
@@ -18,11 +18,26 @@ import { mainApi } from '../../utils/MainApi';
 function App() {
   const [isLogedIn, setIsLogedIn] = useState(false);
   const [movies, setData] = useState([]);
+  const [savedMovies, setSavedMovies] = useState([]);
   const [currentUser, setCurrentUser] = useState({ name: '', email: '' });
+  const [statusRegisterRequest, setStatusRegisterRequest] = useState({});
+  const [statusLoginRequest, setStatusLoginRequest] = useState({});
+  const [savedMoviesByUser, setSavedMoviesByUser] = useState([]);
+
+  useEffect(() => {
+    Promise.all([moviesApi.getMovies(), mainApi.getProfile(), mainApi.getSavedMovies()])
+    .then(([initialMovies, dataProfile, initialSavedMovies]) => {
+      setData(initialMovies);
+      setCurrentUser(dataProfile);
+      setSavedMovies(initialSavedMovies);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }, []);
 
   const history = useHistory();
 
-  const [statusRegisterRequest, setStatusRegisterRequest] = useState({});
   const handleRegister = (name, email, password) => {
     register(name, email, password)
       .then((result) => {
@@ -46,15 +61,15 @@ function App() {
       });
   };
 
-  const [statusLoginRequest, setStatusLoginRequest] = useState({});
   const handleLogin = (email, password) => {
     authorization(email, password)
       .then((result) => {
         if (result) {
-          Promise.all([moviesApi.getMovies(), mainApi.getProfile()])
-      .then(([initialCards, dataProfile]) => {
-        setData(initialCards);
+          Promise.all([moviesApi.getMovies(), mainApi.getProfile(), mainApi.getSavedMovies()])
+      .then(([initialMovies, dataProfile, initialSavedMovies]) => {
+        setData(initialMovies);
         setCurrentUser(dataProfile);
+        setSavedMovies(initialSavedMovies);
       })
       .catch((error) => {
         console.log(error);
@@ -80,10 +95,35 @@ function App() {
       });
   };
 
-  function handleSignOut() {
+  const handleSignOut = () => {
     logout();
     history.push('/signin');
     setIsLogedIn(false);
+  }
+
+  const handleMovieSave = (movie) => {
+    console.log(movie)
+    mainApi.saveMovie(movie)
+      .then((newSavedMovie) => {
+        setSavedMoviesByUser((movies) => [
+          newSavedMovie,
+          ...movies
+        ]);
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
+  const handleMovieDelete = (movie) => {
+    console.log(movie)
+    mainApi.deleteMovie(movie._id)
+      .then(() => {
+        setSavedMoviesByUser((movies) => movies.filter((m) => m._id !== movie._id));
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }
 
   return (
@@ -102,10 +142,18 @@ function App() {
               <Login handleLogin={handleLogin} statusLoginRequest={statusLoginRequest} />
             </Route>
             <Route path="/movies">
-              <Movies movies={movies} />
+              <Movies
+                movies={movies}
+                handleMovieSave={handleMovieSave}
+                savedMoviesByUser={savedMoviesByUser}
+              />
             </Route>
             <Route path="/saved-movies">
-              <SavedMovies />
+              <SavedMovies
+                savedMovies={savedMovies}
+                savedMoviesByUser={savedMoviesByUser}
+                handleMovieDelete={handleMovieDelete}
+              />
             </Route>
             <Route path="/profile">
               <Profile handleSignOut={handleSignOut}/>
