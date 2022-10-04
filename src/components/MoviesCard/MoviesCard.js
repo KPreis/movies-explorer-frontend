@@ -2,8 +2,8 @@ import React from 'react';
 import './MoviesCard.css';
 import { Route, Switch } from 'react-router-dom';
 
-function MoviesCard( { isSaved } ) {
-  console.log(isSaved);
+function MoviesCard( { movie } ) {
+  const isSaved = false;
   const saveButtonClassName = `movies-card__button movies-card__button_type_save ${
     isSaved && "movies-card__button_type_saved"
   }`;
@@ -12,8 +12,8 @@ function MoviesCard( { isSaved } ) {
   return (
     <li className="movies-card">
       <div className="movies-card__header">
-          <h2 className="movies-card__title">В погоне за Бенкси</h2>
-          <span className="movies-card__duration">27 минут</span>
+          <h2 className="movies-card__title">{movie.nameRU}</h2>
+          <span className="movies-card__duration">{movie.duration}</span>
       </div>
       <a
         className="movies-card__link"

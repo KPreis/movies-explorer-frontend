@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import './Profile.css';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Profile( { handleSignOut } ) {
+function Profile( { handleSignOut, profile } ) {
   const { values, handleChange, isValid } = useFormWithValidation();
+  const currentUser = useContext(CurrentUserContext);
 
   const isDisabled = !isValid;
   const isEditing = false;
@@ -29,7 +31,7 @@ function Profile( { handleSignOut } ) {
         <label className="profile-form__label">
           <span className="profile-form__label-text">Имя</span>
           <input
-            value={values.name || ''}
+            value={values.name || currentUser.name}
             onChange={handleChange}
             id="name-input"
             type="text"
@@ -46,7 +48,7 @@ function Profile( { handleSignOut } ) {
         <label className="profile-form__label">
           <span className="profile-form__label-text">E-mail</span>
           <input
-            value={values.email || ''}
+            value={values.email || currentUser.email}
             onChange={handleChange}
             id="email-input"
             type="email"

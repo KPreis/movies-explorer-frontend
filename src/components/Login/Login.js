@@ -3,9 +3,14 @@ import './Login.css';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
 import Form from '../Form/Form';
 
-function Login( {handleLogin} ) {
+function Login( {handleLogin, statusLoginRequest} ) {
   const { values, handleChange, resetFrom, errors, isValid } = useFormWithValidation();
   const isDisabled = !isValid;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleLogin(values.email, values.password);
+  };
 
   useEffect(() => {
     resetFrom({}, {}, false);
@@ -21,6 +26,8 @@ function Login( {handleLogin} ) {
         linkPath="/signup"
         linkText="Регистрация"
         isSubmitDisabled={isDisabled}
+        statusRequest={statusLoginRequest}
+        onSubmit={handleSubmit}
       >
 
         <label className="form__label">

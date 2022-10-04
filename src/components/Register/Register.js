@@ -3,10 +3,16 @@ import './Register.css';
 import Form from '../Form/Form';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
 
-function Register({handleRegister, statusRegister}) {
+function Register({handleRegister, statusRegisterRequest}) {
 
   const { values, handleChange, resetFrom, errors, isValid } = useFormWithValidation();
   const isDisabled = !isValid;
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(values.name, values.email, values.password)
+    handleRegister(values.name, values.email, values.password);
+  };
 
   useEffect(() => {
     resetFrom({}, {}, false);
@@ -21,8 +27,9 @@ function Register({handleRegister, statusRegister}) {
         questionText="Уже зарегистрированы?"
         linkPath="/signin"
         linkText="Войти"
+        statusRequest={statusRegisterRequest}
         isSubmitDisabled={isDisabled}
-        statusRegister={statusRegister}
+        onSubmit={handleSubmit}
       >
         <label className="form__label">
           <span className="form__label-text">Имя</span>
@@ -69,6 +76,7 @@ function Register({handleRegister, statusRegister}) {
             id="password-input"
             type="password"
             name="password"
+            autoComplete="on"
             placeholder="Пароль"
             className="form__input form__input_type_password"
             required

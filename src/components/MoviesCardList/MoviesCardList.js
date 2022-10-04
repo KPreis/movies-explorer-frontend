@@ -2,7 +2,7 @@ import React from 'react';
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList() {
+function MoviesCardList({movies}) {
   const isMoreButtonVisible = true;
   const moreButtonClassName = `movies-card-list__more-button ${
     isMoreButtonVisible && "movies-card-list__more-button_visible"
@@ -11,15 +11,12 @@ function MoviesCardList() {
   return (
     <section className="movies-card-list">
       <ul className="movies-card-list__list">
-        <MoviesCard isSaved={true} />
-        <MoviesCard isSaved={false} />
-        <MoviesCard isSaved={true} />
-        <MoviesCard isSaved={true} />
-        <MoviesCard isSaved={false} />
-        <MoviesCard isSaved={false} />
-        <MoviesCard isSaved={false} />
-        <MoviesCard isSaved={false} />
-        <MoviesCard isSaved={false} />
+      {movies.map((movie) => (
+          <MoviesCard
+            key={movie.movieId}
+            movie={movie}
+          />
+        ))}
       </ul>
       <button
         className={moreButtonClassName}

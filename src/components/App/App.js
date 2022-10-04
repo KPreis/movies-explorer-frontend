@@ -16,27 +16,37 @@ import { mainApi } from '../../utils/MainApi';
 
 
 function App() {
-  const [statusRegister, setStatusRegister] = useState(true);
-  const [isLogedIn, setIsLogedIn] = useState(true);
-  const [cards, setData] = useState([]);
-  const [dataProfile, setDataProfile] = useState({ name: '', email: '' });
+  const [isLogedIn, setIsLogedIn] = useState(false);
+  const [movies, setData] = useState([]);
+  const [currentUser, setCurrentUser] = useState({ name: '', email: '' });
 
   const history = useHistory();
 
-  const handleRegister = (email, password) => {
-    register(email, password)
+  const [statusRegisterRequest, setStatusRegisterRequest] = useState({});
+  const handleRegister = (name, email, password) => {
+    register(name, email, password)
       .then((result) => {
         if (result) {
-          setStatusRegister(true);
           history.push('/signin');
+          setStatusRegisterRequest({});
         }
       })
       .catch((error) => {
-        console.log(error);
-        setStatusRegister(false);
+        if (error === "Ошибка: 409") {
+          setStatusRegisterRequest({
+            type: 'error',
+            text: 'Пользователь с таким email уже существует'
+          });
+        } else {
+          setStatusRegisterRequest({
+            type: 'error',
+            text: 'При регистрации пользователя произошла ошибка'
+          });
+        }
       });
   };
 
+  const [statusLoginRequest, setStatusLoginRequest] = useState({});
   const handleLogin = (email, password) => {
     authorization(email, password)
       .then((result) => {
@@ -44,18 +54,29 @@ function App() {
           Promise.all([moviesApi.getMovies(), mainApi.getProfile()])
       .then(([initialCards, dataProfile]) => {
         setData(initialCards);
-        setDataProfile(dataProfile);
+        setCurrentUser(dataProfile);
       })
       .catch((error) => {
         console.log(error);
       });
-          setStatusRegister(false);
           setIsLogedIn(true);
           history.push('/movies');
+          setStatusLoginRequest({});
         }
       })
       .catch((error) => {
         console.log(error);
+        if (error === "Ошибка: 401") {
+          setStatusLoginRequest({
+            type: 'error',
+            text: 'Неправильный Email или Пароль'
+          });
+        } else {
+          setStatusLoginRequest({
+            type: 'error',
+            text: 'Что-то пошло не так...'
+          });
+        }
       });
   };
 
@@ -67,7 +88,7 @@ function App() {
 
   return (
     <div className="app">
-      <CurrentUserContext.Provider value={'currentUser'}>
+      <CurrentUserContext.Provider value={currentUser}>
         <div className="app__page">
           <Header isLogedIn={isLogedIn} />
           <Switch>
@@ -75,19 +96,19 @@ function App() {
               <Main />
             </Route>
             <Route path="/signup">
-              <Register handleRegister={handleRegister} statusRegister={statusRegister}/>
+              <Register handleRegister={handleRegister} statusRegisterRequest={statusRegisterRequest}/>
             </Route>
             <Route path="/signin">
-              <Login handleLogin={handleLogin} />
+              <Login handleLogin={handleLogin} statusLoginRequest={statusLoginRequest} />
             </Route>
             <Route path="/movies">
-              <Movies />
+              <Movies movies={movies} />
             </Route>
             <Route path="/saved-movies">
               <SavedMovies />
             </Route>
             <Route path="/profile">
-              <Profile handleSignOut={ handleSignOut } />
+              <Profile handleSignOut={handleSignOut}/>
             </Route>
             <Route>
               <Redirect to="/" />
