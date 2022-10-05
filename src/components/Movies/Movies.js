@@ -4,8 +4,10 @@ import SearchForm from '../SearchForm/SearchForm';
 import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import { filterMovies } from '../../utils/filters';
+import { moviesApi } from '../../utils/MoviesApi';
 
-function Movies({ movies, handleMovieSave, handleMovieDelete, savedMoviesByUser }) {
+function Movies({ handleMovieSave, handleMovieDelete, savedMoviesByUser }) {
+  const [movies, setData] = useState([]);
   const [firstResultsNumber, setFirstResultsNumber] = useState(0);
   const [moreResultsNumber, setMoreResultsNumber] = useState(0);
   const [filteredMovies, setFilteredMovies] = useState([]);
@@ -14,16 +16,40 @@ function Movies({ movies, handleMovieSave, handleMovieDelete, savedMoviesByUser 
   const [moviesToRender, setMoviesToRender] = useState([]);
   const [isMoreButtonVisible, setIsMoreButtonVisible] = React.useState(false);
   const currentClientWidth = document.documentElement.clientWidth;
+  const [isSearching, setIsSearching] = useState(false);
+  const [isSearchDone, setIsSearchDone] = useState(false);
 
   const handleSearch = (query, checkboxStatus) => {
     setQuery(query);
     setCheckboxStatus(checkboxStatus);
+    setMoviesToRender([]);
+
+    const initialMoviesInLocalStorage = JSON.parse(localStorage.getItem('initialMovies'));
+
+    if (!initialMoviesInLocalStorage) {
+      setIsSearching(true);
+      moviesApi.getMovies()
+        .then((data) => {
+          setData(data);
+          localStorage.setItem('initialMovies', JSON.stringify(data));
+        })
+        .catch(err => {
+          console.log(err)
+        })
+        .finally(() => {
+          setIsSearching(false);
+        })
+    } else {
+      setData(initialMoviesInLocalStorage);
+    }
+
   }
 
   useEffect(() => {
     if (movies.length > 0) {
       const searchResults = filterMovies(movies, query, checkboxStatus);
       setFilteredMovies(searchResults);
+      setIsSearchDone(true);
     }
   }, [movies, query, checkboxStatus]);
 
@@ -64,20 +90,25 @@ function Movies({ movies, handleMovieSave, handleMovieDelete, savedMoviesByUser 
   return (
     <section className="movies">
       <SearchForm handleSearch={handleSearch} />
-      {moviesToRender.length > 0
-        ? <MoviesCardList
-          movies={moviesToRender}
-          savedMoviesByUser={savedMoviesByUser}
-          handleMovieSave={handleMovieSave}
-          handleMovieDelete={handleMovieDelete}
-          isMoreButtonVisible={isMoreButtonVisible}
-          handleMoreButtonClick={handleMoreButtonClick}
-        />
-        : (
-          <span className="movies__not-found">
-            Фильмы не найдены
-          </span>
-        )}
+      {isSearching
+        ? <Preloader />
+        : isSearchDone
+          ? moviesToRender.length > 0
+            ? <MoviesCardList
+              movies={moviesToRender}
+              savedMoviesByUser={savedMoviesByUser}
+              handleMovieSave={handleMovieSave}
+              handleMovieDelete={handleMovieDelete}
+              isMoreButtonVisible={isMoreButtonVisible}
+              handleMoreButtonClick={handleMoreButtonClick}
+            />
+            : (
+              <span className="movies__not-found">
+                Фильмы не найдены
+              </span>
+            )
+          : ("")
+      }
     </section>
   );
 }

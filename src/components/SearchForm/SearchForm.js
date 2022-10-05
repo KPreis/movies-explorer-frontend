@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './SearchForm.css';
 import CheckboxFilter from '../CheckboxFilter/CheckboxFilter';
 import searchIconWhite from '../../images/search-icon-white.svg';
@@ -9,6 +9,8 @@ function SearchForm({ handleSearch }) {
   const [statusCheckbox, setStatusCheckbox] = useState(false);
 
   const handleQueryChange = (evt) => {
+    const input = document.getElementById('queryInput');
+    input.setCustomValidity('');
     setQuery(evt.target.value);
   }
 
@@ -22,7 +24,12 @@ function SearchForm({ handleSearch }) {
     handleSearch(query, statusCheckbox);
   }
 
-
+  useEffect(() => {
+    if (!query) {
+      const input = document.getElementById('queryInput');
+      input.setCustomValidity('Нужно ввести ключевое слово');
+    }
+  }, [query]);
 
   return (
     <section className="search-form">

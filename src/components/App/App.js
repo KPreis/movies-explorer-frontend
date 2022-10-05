@@ -11,30 +11,17 @@ import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
 import { register, authorization, validateToken, logout } from '../../utils/auth';
-import { moviesApi } from '../../utils/MoviesApi';
 import { mainApi } from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 
 function App() {
   const [isLogedIn, setIsLogedIn] = useState(false);
-  const [movies, setData] = useState([]);
   const [currentUser, setCurrentUser] = useState({ name: '', email: '' });
   const [statusRegisterRequest, setStatusRegisterRequest] = useState({});
   const [statusLoginRequest, setStatusLoginRequest] = useState({});
   const [savedMoviesByUser, setSavedMoviesByUser] = useState([]);
   const [statusEditRequest, setStatusEditRequest] = useState({});
-
-  useEffect(() => {
-    Promise.all([moviesApi.getMovies(), mainApi.getProfile()])
-    .then(([initialMovies, dataProfile]) => {
-      setData(initialMovies);
-      setCurrentUser(dataProfile);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }, []);
 
   useEffect(() => {
     mainApi.getSavedMovies()
@@ -56,8 +43,7 @@ function App() {
     register(name, email, password)
       .then((result) => {
         if (result) {
-          history.push('/signin');
-          setStatusRegisterRequest({});
+          handleLogin(email, password);
         }
       })
       .catch((error) => {
@@ -80,9 +66,8 @@ function App() {
       .then((result) => {
         console.log(result);
         if (result) {
-          Promise.all([moviesApi.getMovies(), mainApi.getProfile()])
-            .then(([initialMovies, dataProfile]) => {
-              setData(initialMovies);
+          mainApi.getProfile()
+          .then((dataProfile) => {
               setCurrentUser(dataProfile);
             })
             .catch((error) => {
@@ -193,7 +178,6 @@ function App() {
             <ProtectedRoute exact path="/movies"
               isLogedIn={isLogedIn}
               component={Movies}
-              movies={movies}
               handleMovieSave={handleMovieSave}
               handleMovieDelete={handleMovieDelete}
               savedMoviesByUser={savedMoviesByUser}
