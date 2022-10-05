@@ -23,6 +23,7 @@ function App() {
   const [statusRegisterRequest, setStatusRegisterRequest] = useState({});
   const [statusLoginRequest, setStatusLoginRequest] = useState({});
   const [savedMoviesByUser, setSavedMoviesByUser] = useState([]);
+  const [statusEditRequest, setStatusEditRequest] = useState({});
 
   useEffect(() => {
     Promise.all([moviesApi.getMovies(), mainApi.getProfile()])
@@ -108,15 +109,37 @@ function App() {
       });
   };
 
+  const handleProfileEdit = (profile) => {
+    const {name, email} = profile;
+    mainApi.setProfile(name, email)
+      .then((result) => {
+        setCurrentUser(result);
+        setStatusEditRequest({
+          type: 'succes',
+          text: 'Профиль обновлён.'
+        });
+      })
+      .catch((error) => {
+        if (error === "Ошибка: 409") {
+          setStatusEditRequest({
+            type: 'error',
+            text: 'Пользователь с таким email уже существует'
+          });
+        } else {
+          setStatusEditRequest({
+            type: 'error',
+            text: 'При обновлении профиля произошла ошибка'
+          });
+        }
+        });
+  };
+
   const checkToken = () => {
     validateToken()
       .then(() => {
         setIsLogedIn(true);
       })
       .catch((error) => {
-        if (error === 'Ошибка: 401') {
-          history.push('/');
-        }
         setIsLogedIn(false);
       });
 };
@@ -185,6 +208,8 @@ function App() {
               isLogedIn={isLogedIn}
               component={Profile}
               handleSignOut={handleSignOut}
+              handleProfileEdit={handleProfileEdit}
+              statusEditRequest={statusEditRequest}
             />
             <Route>
               <Redirect to="/" />

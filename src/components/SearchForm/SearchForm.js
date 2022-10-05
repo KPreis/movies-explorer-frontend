@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './SearchForm.css';
 import CheckboxFilter from '../CheckboxFilter/CheckboxFilter';
 import searchIconWhite from '../../images/search-icon-white.svg';

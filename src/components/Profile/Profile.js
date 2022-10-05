@@ -1,33 +1,53 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import './Profile.css';
 import useFormWithValidation from '../../hooks/useFormWithValidation';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Profile( { handleSignOut, profile } ) {
-  const { values, handleChange, isValid } = useFormWithValidation();
+function Profile( { handleSignOut, statusEditRequest, handleProfileEdit } ) {
+  const { values, handleChange, resetFrom, isValid } = useFormWithValidation();
+  const { text, type } = statusEditRequest;
   const currentUser = useContext(CurrentUserContext);
+  const [isEdit, setIsEditing] = useState(false);
+  const [statusText, setStatusText] = useState('');
 
   const isDisabled = !isValid;
-  const isEditing = false;
 
-
-  const submitButtonClassName = `profile-form__submit ${
-    isDisabled && "profile-form__submit_inactive"
-  }`;
-  const inputClassName = `profile-form__input ${
-    !isEditing && "profile-form__input_disabled"
-  }`;
+  console.log(isDisabled, isValid);
   
+  const submitButtonClassName = `profile-form__submit ${isDisabled && "profile-form__submit_inactive"}`;
+  const inputClassName = `profile-form__input ${!isEdit && "profile-form__input_disabled"}`;
 
+  const apiMessageClassName = `profile-form__api-message profile-form__api-message_type_${type}`;
+
+  const handleEditClick = () => {
+    resetFrom(currentUser, {}, false);
+    setIsEditing(true);
+    setStatusText('');
+  }
+
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    setIsEditing(false);
+    handleProfileEdit(values);
+  }
+
+  useEffect(() => {
+    if (text) {
+      setStatusText(text);
+    }
+  }, [text]);
+
+  useEffect(() => {
+    if (currentUser) {
+      resetFrom(currentUser, {}, false);
+      setStatusText('');
+    }
+  }, [currentUser, resetFrom]);
+  
   return (
     <section className="profile">
-      <form
-        className="profile-form"
-        name="login"
-        action="#"
-      >
-        <h1 className="profile-form__title">Привет, Виталий!</h1>
-
+      <form  className="profile-form" name="login" onSubmit={handleSubmit}>
+        <h1 className="profile-form__title">Привет, {currentUser.name}!</h1>
         <label className="profile-form__label">
           <span className="profile-form__label-text">Имя</span>
           <input
@@ -41,7 +61,7 @@ function Profile( { handleSignOut, profile } ) {
             minLength="2"
             maxLength="30"
             required
-            disabled={!isEditing}
+            disabled={!isEdit}
           />
         </label>
 
@@ -57,11 +77,18 @@ function Profile( { handleSignOut, profile } ) {
             placeholder="E-mail"
             className={inputClassName}
             required
-            disabled={!isEditing}
+            disabled={!isEdit}
           />
         </label>
 
-        {isEditing ? (
+        {!isEdit && (
+          <span
+            className={apiMessageClassName}
+          >{statusText}</span>
+        )}
+        
+
+        {isEdit ? (
           <button
             type="submit"
             className={submitButtonClassName}
@@ -71,7 +98,8 @@ function Profile( { handleSignOut, profile } ) {
           <>
             <button
               className="profile-form__edit"
-              type="button"
+                type="button"
+                onClick={handleEditClick}
             >Редактировать</button>
             <button
               className="profile__logout"
