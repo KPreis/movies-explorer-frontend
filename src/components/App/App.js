@@ -13,28 +13,41 @@ import Profile from '../Profile/Profile';
 import { register, authorization, validateToken, logout } from '../../utils/auth';
 import { moviesApi } from '../../utils/MoviesApi';
 import { mainApi } from '../../utils/MainApi';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 
 function App() {
   const [isLogedIn, setIsLogedIn] = useState(false);
   const [movies, setData] = useState([]);
-  const [savedMovies, setSavedMovies] = useState([]);
   const [currentUser, setCurrentUser] = useState({ name: '', email: '' });
   const [statusRegisterRequest, setStatusRegisterRequest] = useState({});
   const [statusLoginRequest, setStatusLoginRequest] = useState({});
   const [savedMoviesByUser, setSavedMoviesByUser] = useState([]);
 
   useEffect(() => {
-    Promise.all([moviesApi.getMovies(), mainApi.getProfile(), mainApi.getSavedMovies()])
-    .then(([initialMovies, dataProfile, initialSavedMovies]) => {
+    Promise.all([moviesApi.getMovies(), mainApi.getProfile()])
+    .then(([initialMovies, dataProfile]) => {
       setData(initialMovies);
       setCurrentUser(dataProfile);
-      setSavedMovies(initialSavedMovies);
     })
     .catch((error) => {
       console.log(error);
     });
   }, []);
+
+  useEffect(() => {
+    mainApi.getSavedMovies()
+      .then((result) => {
+        setSavedMoviesByUser(result.filter((i) => i.owner === currentUser._id));
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, [currentUser]);
+
+  useEffect(() => {
+    checkToken();
+  });
 
   const history = useHistory();
 
@@ -64,20 +77,20 @@ function App() {
   const handleLogin = (email, password) => {
     authorization(email, password)
       .then((result) => {
+        console.log(result);
         if (result) {
-          Promise.all([moviesApi.getMovies(), mainApi.getProfile(), mainApi.getSavedMovies()])
-      .then(([initialMovies, dataProfile, initialSavedMovies]) => {
-        setData(initialMovies);
-        setCurrentUser(dataProfile);
-        setSavedMovies(initialSavedMovies);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-          setIsLogedIn(true);
-          history.push('/movies');
-          setStatusLoginRequest({});
-        }
+          Promise.all([moviesApi.getMovies(), mainApi.getProfile()])
+            .then(([initialMovies, dataProfile]) => {
+              setData(initialMovies);
+              setCurrentUser(dataProfile);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+            setIsLogedIn(true);
+            history.push('/movies');
+            setStatusLoginRequest({});
+          }
       })
       .catch((error) => {
         console.log(error);
@@ -94,6 +107,19 @@ function App() {
         }
       });
   };
+
+  const checkToken = () => {
+    validateToken()
+      .then(() => {
+        setIsLogedIn(true);
+      })
+      .catch((error) => {
+        if (error === 'Ошибка: 401') {
+          history.push('/');
+        }
+        setIsLogedIn(false);
+      });
+};
 
   const handleSignOut = () => {
     logout();
@@ -135,29 +161,31 @@ function App() {
             <Route exact path="/">
               <Main />
             </Route>
-            <Route path="/signup">
+            <Route exact path="/signup">
               <Register handleRegister={handleRegister} statusRegisterRequest={statusRegisterRequest}/>
             </Route>
-            <Route path="/signin">
+            <Route exact path="/signin">
               <Login handleLogin={handleLogin} statusLoginRequest={statusLoginRequest} />
             </Route>
-            <Route path="/movies">
-              <Movies
-                movies={movies}
-                handleMovieSave={handleMovieSave}
-                savedMoviesByUser={savedMoviesByUser}
-              />
-            </Route>
-            <Route path="/saved-movies">
-              <SavedMovies
-                savedMovies={savedMovies}
-                savedMoviesByUser={savedMoviesByUser}
-                handleMovieDelete={handleMovieDelete}
-              />
-            </Route>
-            <Route path="/profile">
-              <Profile handleSignOut={handleSignOut}/>
-            </Route>
+            <ProtectedRoute exact path="/movies"
+              isLogedIn={isLogedIn}
+              component={Movies}
+              movies={movies}
+              handleMovieSave={handleMovieSave}
+              handleMovieDelete={handleMovieDelete}
+              savedMoviesByUser={savedMoviesByUser}
+            />
+            <ProtectedRoute exact path="/saved-movies"
+              isLogedIn={isLogedIn}
+              component={SavedMovies}
+              savedMoviesByUser={savedMoviesByUser}
+              handleMovieDelete={handleMovieDelete}
+            />
+            <ProtectedRoute exact path="/profile"
+              isLogedIn={isLogedIn}
+              component={Profile}
+              handleSignOut={handleSignOut}
+            />
             <Route>
               <Redirect to="/" />
             </Route>

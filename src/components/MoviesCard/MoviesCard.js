@@ -10,10 +10,10 @@ function MoviesCard({
   handleMovieSave,
   savedMoviesByUser
 }) {
+
   const isSaved = movie.id && savedMoviesByUser.some((m) => m.movieId === movie.id);
-  const saveButtonClassName = `movies-card__button movies-card__button_type_save ${isSaved && "movies-card__button_type_saved"
-    }`;
-  const deleteButtonClassName = "movies-card__button movies-card__button_type_delete";
+
+  const saveButtonClassName = `movies-card__button movies-card__button_type_save ${isSaved && "movies-card__button_type_saved"}`;
 
   const handleDeleteClick = () => {
     handleMovieDelete(movie);
@@ -66,9 +66,9 @@ function MoviesCard({
           </Route>
           <Route path="/saved-movies">
             <button
-              className={deleteButtonClassName}
-            type="button"
-            onClick={handleDeleteClick}
+              className="movies-card__button movies-card__button_type_delete"
+              type="button"
+              onClick={handleDeleteClick}
             ></button>
           </Route>
         </Switch>

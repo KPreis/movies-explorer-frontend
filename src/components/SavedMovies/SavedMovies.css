@@ -1,42 +1,9 @@
-.saved-movies-card-list {
-  max-width: 1280px; 
-  padding: 70px 70px 0;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  box-sizing: border-box;
-}
-
-.saved-movies-card-list__list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 360px));
-  gap: 32px 28px;
-  list-style-type: none;
-  justify-content: center;
-  margin: 0;
-  padding: 0;
-}
-
-@media screen and (max-width: 905px) {
-  .saved-movies-card-list {
-    padding: 70px 30px 0;
-  }
-  
-  .saved-movies-card-list__list {
-    grid-template-columns: repeat(auto-fill, minmax(342px, 342px));
-    gap: 35px 24px;
-  }
-}
-
-@media screen and (max-width: 530px) {
-  .saved-movies-card-list {
-    padding: 40px 10px 0;
-  }
-}
-
-@media screen and (max-width: 530px) {
-  .saved-movies-card-list {
-    min-width: 320px;
-  }
+.saved-movies__not-found {
+  color: black;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: calc(42/30);
+  text-align: center;
+  display: block;
+  margin: 20px;
 }
