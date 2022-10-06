@@ -10,11 +10,9 @@ function Profile( { handleSignOut, statusEditRequest, handleProfileEdit } ) {
   const [isEdit, setIsEditing] = useState(false);
   const [statusText, setStatusText] = useState('');
 
-  const isDisabled = !isValid;
+  const isDisabled = isValid && (values.name !== currentUser.name || values.email !== currentUser.email);
 
-  console.log(isDisabled, isValid);
-  
-  const submitButtonClassName = `profile-form__submit ${isDisabled && "profile-form__submit_inactive"}`;
+  const submitButtonClassName = `profile-form__submit ${!isDisabled && "profile-form__submit_inactive"}`;
   const inputClassName = `profile-form__input ${!isEdit && "profile-form__input_disabled"}`;
 
   const apiMessageClassName = `profile-form__api-message profile-form__api-message_type_${type}`;
@@ -32,15 +30,16 @@ function Profile( { handleSignOut, statusEditRequest, handleProfileEdit } ) {
   }
 
   useEffect(() => {
-    if (text) {
       setStatusText(text);
-    }
-  }, [text]);
+  }, [statusEditRequest]);
+
+  useEffect(() => {
+    setStatusText('');
+}, []);
 
   useEffect(() => {
     if (currentUser) {
-      resetFrom(currentUser, {}, false);
-      setStatusText('');
+      resetFrom(currentUser, {}, false)
     }
   }, [currentUser, resetFrom]);
   
@@ -81,18 +80,18 @@ function Profile( { handleSignOut, statusEditRequest, handleProfileEdit } ) {
           />
         </label>
 
-        {!isEdit && (
+        
           <span
             className={apiMessageClassName}
           >{statusText}</span>
-        )}
+        
         
 
         {isEdit ? (
           <button
             type="submit"
             className={submitButtonClassName}
-            disabled={isDisabled}
+            disabled={!isDisabled}
           >Сохранить</button>
         ) : (
           <>

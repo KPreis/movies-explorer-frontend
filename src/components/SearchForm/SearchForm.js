@@ -4,19 +4,28 @@ import CheckboxFilter from '../CheckboxFilter/CheckboxFilter';
 import searchIconWhite from '../../images/search-icon-white.svg';
 import searchIconColor from '../../images/search-icon-color.svg';
 
-function SearchForm({ handleSearch }) {
-  const [query, setQuery] = useState('');
-  const [statusCheckbox, setStatusCheckbox] = useState(false);
+function SearchForm({ handleSearch, queryString, checkboxStatus }) {
+  
+  const moviesPathname = window.location.pathname === '/movies';
+
+  const [query, setQuery] = useState(moviesPathname && queryString ? queryString : '');
+  const [statusCheckbox, setStatusCheckbox] = useState(checkboxStatus === 'true' || false);
 
   const handleQueryChange = (evt) => {
     const input = document.getElementById('queryInput');
     input.setCustomValidity('');
     setQuery(evt.target.value);
+    if (moviesPathname) {
+      localStorage.setItem('queryString', evt.target.value);
+    }
   }
 
   const handleCheckboxChange = (statusCheckbox) => {
     setStatusCheckbox(statusCheckbox);
     handleSearch(query, statusCheckbox);
+    if (moviesPathname) {
+      localStorage.setItem('checkboxStatus', statusCheckbox);
+    }
   }
 
   const handleSubmit = (evt) => {

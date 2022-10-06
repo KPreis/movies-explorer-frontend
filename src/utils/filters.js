@@ -1,9 +1,11 @@
+import { DURATION_SHORT_FILM } from './consts';
+
 export const filterMovies = (movies, query, checkboxStatus) => {
   let moviesToFilter = movies;
   let result;
 
   if (checkboxStatus) {
-    moviesToFilter = moviesToFilter.filter((movie) => movie.duration <= 40);
+    moviesToFilter = moviesToFilter.filter((movie) => movie.duration <= DURATION_SHORT_FILM);
   }
 
   result = moviesToFilter.filter((movie) => {

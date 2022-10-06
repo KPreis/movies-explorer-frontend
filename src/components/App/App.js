@@ -16,7 +16,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 
 function App() {
-  const [isLogedIn, setIsLogedIn] = useState(false);
+  const [isLogedIn, setIsLogedIn] = useState(true);
   const [currentUser, setCurrentUser] = useState({ name: '', email: '' });
   const [statusRegisterRequest, setStatusRegisterRequest] = useState({});
   const [statusLoginRequest, setStatusLoginRequest] = useState({});
@@ -36,6 +36,27 @@ function App() {
   useEffect(() => {
     checkToken();
   });
+
+  useEffect(() => {
+    localStorage.setItem('savedMovies', JSON.stringify(savedMoviesByUser));
+  }, [savedMoviesByUser])
+
+  useEffect(() => {
+    const currentUserInSessionStorage = JSON.parse(sessionStorage.getItem('currentUser'));
+
+    if (!currentUserInSessionStorage) {
+      mainApi.getProfile()
+      .then((dataProfile) => {
+        setCurrentUser(dataProfile);
+        sessionStorage.setItem('currentUser', JSON.stringify(dataProfile));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    } else {
+      setCurrentUser(currentUserInSessionStorage);
+    }
+  }, []);
 
   const history = useHistory();
 
@@ -64,11 +85,11 @@ function App() {
   const handleLogin = (email, password) => {
     authorization(email, password)
       .then((result) => {
-        console.log(result);
         if (result) {
           mainApi.getProfile()
           .then((dataProfile) => {
-              setCurrentUser(dataProfile);
+            setCurrentUser(dataProfile);
+            sessionStorage.setItem('currentUser', JSON.stringify(dataProfile));
             })
             .catch((error) => {
               console.log(error);
@@ -100,9 +121,10 @@ function App() {
       .then((result) => {
         setCurrentUser(result);
         setStatusEditRequest({
-          type: 'succes',
+          type: 'success',
           text: 'Профиль обновлён.'
         });
+        sessionStorage.setItem('currentUser', JSON.stringify(result));
       })
       .catch((error) => {
         if (error === "Ошибка: 409") {
@@ -127,16 +149,18 @@ function App() {
       .catch((error) => {
         setIsLogedIn(false);
       });
-};
+  };
 
   const handleSignOut = () => {
     logout();
-    history.push('/signin');
+    localStorage.clear();
+    sessionStorage.clear();
+    history.push('/');
     setIsLogedIn(false);
+    setStatusEditRequest({})
   }
 
   const handleMovieSave = (movie) => {
-    console.log(movie)
     mainApi.saveMovie(movie)
       .then((newSavedMovie) => {
         setSavedMoviesByUser((movies) => [
@@ -150,7 +174,6 @@ function App() {
   }
 
   const handleMovieDelete = (movie) => {
-    console.log(movie)
     mainApi.deleteMovie(movie._id)
       .then(() => {
         setSavedMoviesByUser((movies) => movies.filter((m) => m._id !== movie._id));
@@ -175,29 +198,26 @@ function App() {
             <Route exact path="/signin">
               <Login handleLogin={handleLogin} statusLoginRequest={statusLoginRequest} />
             </Route>
-            <ProtectedRoute exact path="/movies"
+            <ProtectedRoute path="/movies"
               isLogedIn={isLogedIn}
               component={Movies}
               handleMovieSave={handleMovieSave}
               handleMovieDelete={handleMovieDelete}
               savedMoviesByUser={savedMoviesByUser}
             />
-            <ProtectedRoute exact path="/saved-movies"
+            <ProtectedRoute path="/saved-movies"
               isLogedIn={isLogedIn}
               component={SavedMovies}
               savedMoviesByUser={savedMoviesByUser}
               handleMovieDelete={handleMovieDelete}
             />
-            <ProtectedRoute exact path="/profile"
+            <ProtectedRoute path="/profile"
               isLogedIn={isLogedIn}
               component={Profile}
               handleSignOut={handleSignOut}
               handleProfileEdit={handleProfileEdit}
               statusEditRequest={statusEditRequest}
             />
-            <Route>
-              <Redirect to="/" />
-            </Route>
           </Switch>
           <Footer />
         </div>

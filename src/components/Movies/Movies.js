@@ -5,64 +5,47 @@ import Preloader from '../Preloader/Preloader';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import { filterMovies } from '../../utils/filters';
 import { moviesApi } from '../../utils/MoviesApi';
+import {
+  NUMBERS_MOVIES_DESKTOP,
+  NUMBERS_MORE_MOVIES_DESKTOP,
+  NUMBERS_MOVIES_PAD,
+  NUMBERS_MORE_MOVIES_PAD,
+  NUMBERS_MOVIES_MOBILE,
+  NUMBERS_MORE_MOVIES_MOBILE
+} from '../../utils/consts';
 
 function Movies({ handleMovieSave, handleMovieDelete, savedMoviesByUser }) {
   const [movies, setData] = useState([]);
   const [firstResultsNumber, setFirstResultsNumber] = useState(0);
   const [moreResultsNumber, setMoreResultsNumber] = useState(0);
-  const [filteredMovies, setFilteredMovies] = useState([]);
-  const [query, setQuery] = useState('');
-  const [checkboxStatus, setCheckboxStatus] = useState(false);
-  const [moviesToRender, setMoviesToRender] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState(JSON.parse(localStorage.getItem('filteredMovies')) || []);
+  const [query, setQuery] = useState(localStorage.getItem('queryString') || '');
+  const [checkboxStatus, setCheckboxStatus] = useState(localStorage.getItem('checkboxStatus') || false);
+  const [moviesToRender, setMoviesToRender] = useState(filteredMovies  || []);
   const [isMoreButtonVisible, setIsMoreButtonVisible] = React.useState(false);
   const currentClientWidth = document.documentElement.clientWidth;
   const [isSearching, setIsSearching] = useState(false);
   const [isSearchDone, setIsSearchDone] = useState(false);
 
-  const handleSearch = (query, checkboxStatus) => {
-    setQuery(query);
-    setCheckboxStatus(checkboxStatus);
-    setMoviesToRender([]);
-
-    const initialMoviesInLocalStorage = JSON.parse(localStorage.getItem('initialMovies'));
-
-    if (!initialMoviesInLocalStorage) {
-      setIsSearching(true);
-      moviesApi.getMovies()
-        .then((data) => {
-          setData(data);
-          localStorage.setItem('initialMovies', JSON.stringify(data));
-        })
-        .catch(err => {
-          console.log(err)
-        })
-        .finally(() => {
-          setIsSearching(false);
-        })
-    } else {
-      setData(initialMoviesInLocalStorage);
-    }
-
-  }
-
   useEffect(() => {
     if (movies.length > 0) {
       const searchResults = filterMovies(movies, query, checkboxStatus);
       setFilteredMovies(searchResults);
+      localStorage.setItem('filteredMovies', JSON.stringify(searchResults));
       setIsSearchDone(true);
     }
   }, [movies, query, checkboxStatus]);
 
   useEffect(() => {
     if (currentClientWidth <= 767) {
-      setFirstResultsNumber(5);
-      setMoreResultsNumber(2);
+      setFirstResultsNumber(NUMBERS_MOVIES_DESKTOP);
+      setMoreResultsNumber(NUMBERS_MORE_MOVIES_DESKTOP);
     } else if (currentClientWidth <= 1275) {
-      setFirstResultsNumber(8);
-      setMoreResultsNumber(2);
+      setFirstResultsNumber(NUMBERS_MOVIES_PAD);
+      setMoreResultsNumber(NUMBERS_MORE_MOVIES_PAD);
     } else if (currentClientWidth > 1275) {
-      setFirstResultsNumber(12);
-      setMoreResultsNumber(3);
+      setFirstResultsNumber(NUMBERS_MOVIES_MOBILE);
+      setMoreResultsNumber(NUMBERS_MORE_MOVIES_MOBILE);
     }
   }, [currentClientWidth]);
 
@@ -83,31 +66,64 @@ function Movies({ handleMovieSave, handleMovieDelete, savedMoviesByUser }) {
     }
   }, [moviesToRender, filteredMovies]);
 
+  const handleSearch = (query, checkboxStatus) => {
+    setQuery(query);
+    setCheckboxStatus(checkboxStatus);
+
+    const initialMoviesInLocalStorage = JSON.parse(localStorage.getItem('initialMovies'));
+
+    if (!initialMoviesInLocalStorage) {
+      setIsSearching(true);
+      moviesApi.getMovies()
+        .then((data) => {
+          setData(data);
+          localStorage.setItem('initialMovies', JSON.stringify(data));
+        })
+        .catch(err => {
+          console.log(err)
+        })
+        .finally(() => {
+          setIsSearching(false);
+        })
+    } else {
+      setData(initialMoviesInLocalStorage);
+    }
+  }
+
   const handleMoreButtonClick = () => {
     setMoviesToRender((state) => filteredMovies.slice(0, state.length + moreResultsNumber));
   }
 
   return (
     <section className="movies">
-      <SearchForm handleSearch={handleSearch} />
-      {isSearching
-        ? <Preloader />
-        : isSearchDone
-          ? moviesToRender.length > 0
-            ? <MoviesCardList
-              movies={moviesToRender}
-              savedMoviesByUser={savedMoviesByUser}
-              handleMovieSave={handleMovieSave}
-              handleMovieDelete={handleMovieDelete}
-              isMoreButtonVisible={isMoreButtonVisible}
-              handleMoreButtonClick={handleMoreButtonClick}
-            />
-            : (
-              <span className="movies__not-found">
-                Фильмы не найдены
-              </span>
-            )
-          : ("")
+      <SearchForm handleSearch={handleSearch} queryString={query} checkboxStatus={checkboxStatus}/>
+      {filteredMovies === []
+        ? isSearching
+          ? <Preloader />
+          : isSearchDone
+            ? moviesToRender.length > 0
+              ? <MoviesCardList
+                movies={moviesToRender}
+                savedMoviesByUser={savedMoviesByUser}
+                handleMovieSave={handleMovieSave}
+                handleMovieDelete={handleMovieDelete}
+                isMoreButtonVisible={isMoreButtonVisible}
+                handleMoreButtonClick={handleMoreButtonClick}
+              />
+              : (
+                <span className="movies__not-found">
+                  Фильмы не найдены
+                </span>
+              )
+            : ("")
+        :<MoviesCardList
+          movies={moviesToRender}
+          savedMoviesByUser={savedMoviesByUser}
+          handleMovieSave={handleMovieSave}
+          handleMovieDelete={handleMovieDelete}
+          isMoreButtonVisible={isMoreButtonVisible}
+          handleMoreButtonClick={handleMoreButtonClick}
+          />
       }
     </section>
   );

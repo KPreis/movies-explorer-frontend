@@ -7,7 +7,7 @@ import {filterMovies} from '../../utils/filters';
 function SavedMovies({ handleMovieDelete, savedMoviesByUser }) {
   const [query, setQuery] = useState('');
   const [checkboxStatus, setCheckboxStatus] = useState(false);
-  const [filteredMovies, setFilteredMovies] = useState(savedMoviesByUser);
+  const [filteredMovies, setFilteredMovies] = useState(JSON.parse(localStorage.getItem('savedMovies')) || savedMoviesByUser);
 
   function handleSearch(query, checkboxStatus) {
     setQuery(query);
@@ -17,17 +17,19 @@ function SavedMovies({ handleMovieDelete, savedMoviesByUser }) {
   }
 
   useEffect(() => {
+    setFilteredMovies(JSON.parse(localStorage.getItem('savedMovies')));
+  });
+
+  useEffect(() => {
     if (filteredMovies.length > 0) {
       const searchResult = filterMovies(savedMoviesByUser, query, checkboxStatus);
       setFilteredMovies(searchResult);
     }
-  }, [savedMoviesByUser]);
-
-  console.log(filteredMovies.length);
+  }, [filteredMovies, savedMoviesByUser]);
 
   return (
     <section className="saved-movies">
-      <SearchForm handleSearch={handleSearch} />
+      <SearchForm handleSearch={handleSearch} checkboxStatus={false}/>
       {filteredMovies.length > 0
         ? <MoviesCardList
             movies={filteredMovies}
