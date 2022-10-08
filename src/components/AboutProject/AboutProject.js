@@ -4,7 +4,7 @@ import './AboutProject.css';
 function AboutProject() {
 
   return (
-    <div className="about-project">
+    <section className="about-project" id="about">
       <div className="about-project__content">
         <h2 className="about-project__title">О проекте</h2>
         <div className="about-project__flex-container">
@@ -30,7 +30,7 @@ function AboutProject() {
           <p className="about-project__timeline-description">Front-end</p>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

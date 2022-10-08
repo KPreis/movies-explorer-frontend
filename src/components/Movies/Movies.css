@@ -1,0 +1,9 @@
+.movies__not-found {
+  color: black;
+  margin: 20px;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: calc(42/30);
+  display: block;
+  text-align: center;
+}

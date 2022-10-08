@@ -1,20 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './SavedMovies.css';
 import SearchForm from '../SearchForm/SearchForm';
-import MoviesCard from '../MoviesCard/MoviesCard';
+import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import {filterMovies} from '../../utils/filters';
 
-function SavedMovies() {
+function SavedMovies({ handleMovieDelete, savedMoviesByUser }) {
+  const [query, setQuery] = useState('');
+  const [checkboxStatus, setCheckboxStatus] = useState(false);
+  const [filteredMovies, setFilteredMovies] = useState(JSON.parse(localStorage.getItem('savedMovies')) || savedMoviesByUser);
+
+  function handleSearch(query, checkboxStatus) {
+    setQuery(query);
+    setCheckboxStatus(checkboxStatus);
+    const movies = filterMovies(savedMoviesByUser, query, checkboxStatus);
+    setFilteredMovies(movies);
+  }
+
+  useEffect(() => {
+    if (savedMoviesByUser.length > 0) {
+      const searchResult = filterMovies(savedMoviesByUser, query, checkboxStatus);
+      setFilteredMovies(searchResult);
+    }
+  }, [filteredMovies, savedMoviesByUser]);
+
   return (
     <section className="saved-movies">
-      <SearchForm />
-      <div className="saved-movies-card-list">
-        <ul className="saved-movies-card-list__list">
-          <MoviesCard />
-          <MoviesCard />
-          <MoviesCard />
-          <MoviesCard />
-        </ul>
-      </div>
+      <SearchForm handleSearch={handleSearch} checkboxStatus={false}/>
+      {filteredMovies.length > 0
+        ? <MoviesCardList
+            movies={filteredMovies}
+            handleMovieDelete={handleMovieDelete}
+            isMoreButtonVisible={false}
+          />
+        : (
+          <span className="saved-movies__not-found">
+            Фильмы не найдены 
+          </span>
+        )
+      }
     </section>
   );
 }
