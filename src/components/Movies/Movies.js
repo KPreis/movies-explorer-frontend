@@ -30,11 +30,12 @@ function Movies({ handleMovieSave, handleMovieDelete, savedMoviesByUser }) {
   useEffect(() => {
     if (movies.length > 0) {
       const searchResults = filterMovies(movies, query, checkboxStatus);
+      
       setFilteredMovies(searchResults);
       localStorage.setItem('filteredMovies', JSON.stringify(searchResults));
       setIsSearchDone(true);
     }
-  }, [movies, query, checkboxStatus]);
+  }, [query, checkboxStatus]);
 
   useEffect(() => {
     if (currentClientWidth <= 767) {
@@ -57,6 +58,8 @@ function Movies({ handleMovieSave, handleMovieDelete, savedMoviesByUser }) {
       } else {
         setMoviesToRender(filteredMovies);
       }
+    } else {
+      setMoviesToRender(filteredMovies);
     }
   }, [filteredMovies, firstResultsNumber]);
 
@@ -116,14 +119,20 @@ function Movies({ handleMovieSave, handleMovieDelete, savedMoviesByUser }) {
                 </span>
               )
             : ("")
-        :<MoviesCardList
+        :moviesToRender.length > 0
+        ? <MoviesCardList
           movies={moviesToRender}
           savedMoviesByUser={savedMoviesByUser}
           handleMovieSave={handleMovieSave}
           handleMovieDelete={handleMovieDelete}
           isMoreButtonVisible={isMoreButtonVisible}
           handleMoreButtonClick={handleMoreButtonClick}
-          />
+        />
+        : (
+          <span className="movies__not-found">
+            Фильмы не найдены
+          </span>
+        )
       }
     </section>
   );

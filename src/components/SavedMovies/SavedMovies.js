@@ -17,11 +17,7 @@ function SavedMovies({ handleMovieDelete, savedMoviesByUser }) {
   }
 
   useEffect(() => {
-    setFilteredMovies(JSON.parse(localStorage.getItem('savedMovies')));
-  });
-
-  useEffect(() => {
-    if (filteredMovies.length > 0) {
+    if (savedMoviesByUser.length > 0) {
       const searchResult = filterMovies(savedMoviesByUser, query, checkboxStatus);
       setFilteredMovies(searchResult);
     }

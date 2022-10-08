@@ -10,6 +10,7 @@ import Login from '../Login/Login';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
+import PageNotFound from '../PageNotFound/PageNotFound';
 import { register, authorization, validateToken, logout } from '../../utils/auth';
 import { mainApi } from '../../utils/MainApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
@@ -193,10 +194,10 @@ function App() {
               <Main />
             </Route>
             <Route exact path="/signup">
-              <Register handleRegister={handleRegister} statusRegisterRequest={statusRegisterRequest}/>
+              {isLogedIn ? <Redirect to="/" /> : <Register handleRegister={handleRegister} statusRegisterRequest={statusRegisterRequest}/>}
             </Route>
             <Route exact path="/signin">
-              <Login handleLogin={handleLogin} statusLoginRequest={statusLoginRequest} />
+              {isLogedIn ? <Redirect to="/" /> : <Login handleLogin={handleLogin} statusLoginRequest={statusLoginRequest} />}
             </Route>
             <ProtectedRoute path="/movies"
               isLogedIn={isLogedIn}
@@ -218,6 +219,9 @@ function App() {
               handleProfileEdit={handleProfileEdit}
               statusEditRequest={statusEditRequest}
             />
+            <Route path="/*">
+              <PageNotFound />
+            </Route>
           </Switch>
           <Footer />
         </div>
